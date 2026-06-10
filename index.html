@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="東京・神奈川の売買・賃貸・リノベーション物件をご紹介。4,800件以上の掲載物件から専任スタッフが条件に合った一軒をご提案。初回相談・内見は無料。">
+  <title>ネクストライフ不動産 | 東京・神奈川の売買・賃貸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap');
+
+    :root {
+      --green:       #1A4A32;
+      --green-mid:   #235F40;
+      --green-light: #2F7A52;
+      --orange:      #E8622A;
+      --orange-light:#F07E4D;
+      --bg:          #F5F3EE;
+      --bg-light:    #FAFAF7;
+      --white:       #FFFFFF;
+      --dark:        #1A1F1C;
+      --text:        #2D3730;
+      --text-mid:    #5A6560;
+      --text-light:  #8A9490;
+      --border:      rgba(26,74,50,0.10);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg-light);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      padding: 0 3rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    #nav.scrolled {
+      background: rgba(255,255,255,0.97);
+      box-shadow: 0 2px 20px rgba(26,74,50,0.1);
+      backdrop-filter: blur(10px);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: background 0.4s;
+    }
+    .nav-logo-text {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 1.5px;
+      transition: color 0.4s;
+    }
+    #nav.scrolled .nav-logo-text { color: var(--green); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+    #nav.scrolled .nav-links a { color: var(--text-mid); }
+    .nav-links a:hover { color: var(--orange) !important; }
+    .nav-cta {
+      padding: 0.55rem 1.5rem;
+      background: var(--orange);
+      color: var(--white) !important;
+      border-radius: 4px;
+      font-weight: 500 !important;
+      transition: background 0.3s !important;
+    }
+    .nav-cta:hover { background: var(--orange-light) !important; }
+    .nav-cta-mobile {
+      display: none;
+      padding: 0.5rem 1.1rem;
+      background: var(--orange);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    @media (max-width: 960px) {
+      .nav-cta-mobile { display: block; }
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, #0A2618 0%, var(--green) 45%, #1E5C3A 100%);
+    }
+    /* 幾何学模様 */
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .hero-pattern::before {
+      content: '';
+      position: absolute;
+      right: -10%;
+      top: -5%;
+      width: 65vw;
+      height: 65vw;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .hero-pattern::after {
+      content: '';
+      position: absolute;
+      right: -5%;
+      top: -15%;
+      width: 55vw;
+      height: 55vw;
+      border-radius: 50%;
+      border: 1px solid rgba(232,98,42,0.12);
+    }
+    /* 建物シルエット（CSS描画） */
+    .hero-buildings {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 55%;
+      height: 80%;
+      overflow: hidden;
+    }
+    .building {
+      position: absolute;
+      bottom: 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .b1 { width: 120px; height: 60%; right: 30%; }
+    .b2 { width: 90px; height: 50%; right: 22%; }
+    .b3 { width: 150px; height: 75%; right: 10%; }
+    .b4 { width: 80px; height: 45%; right: 3%; }
+    .b5 { width: 100px; height: 55%; right: 40%; }
+    /* 窓の光 */
+    .building::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 12%;
+      right: 12%;
+      bottom: 10%;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent, transparent 12px,
+          rgba(232,98,42,0.15) 12px, rgba(232,98,42,0.15) 14px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent, transparent 14px,
+          rgba(232,98,42,0.15) 14px, rgba(232,98,42,0.15) 16px
+        );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 0 3rem 7rem;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232,98,42,0.15);
+      border: 1px solid rgba(232,98,42,0.4);
+      color: #F0A07A;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
+    .hero-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.8rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.45;
+      margin-bottom: 1.2rem;
+      word-break: keep-all;
+    }
+    @media (max-width: 480px) {
+      .hero-title br { display: none; }
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--orange-light);
+      position: relative;
+    }
+    .hero-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.9;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+    /* 検索ボックス */
+    .hero-search {
+      background: rgba(255,255,255,0.97);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      max-width: 720px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .search-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1;
+      min-width: 140px;
+    }
+    .search-group label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 1px;
+    }
+    .search-group select,
+    .search-group input {
+      border: 1.5px solid #E2E8E4;
+      border-radius: 6px;
+      padding: 0.65rem 0.9rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
+      background: var(--white);
+    }
+    .search-group select:focus,
+    .search-group input:focus { border-color: var(--green-light); }
+    .search-btn {
+      padding: 0.75rem 2rem;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .search-btn:hover { background: var(--orange-light); transform: translateY(-1px); }
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .hstat { text-align: left; }
+    .hstat-num {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--orange-light);
+      line-height: 1;
+    }
+    .hstat-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 1px;
+      margin-top: 0.3rem;
+    }
+
+    /* ===== COMMON ===== */
+    section { padding: 6rem 3rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .sec-label {
+      font-size: 0.68rem;
+      letter-spacing: 4px;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+    .sec-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 600;
+      color: var(--green);
+      line-height: 1.5;
+    }
+    .sec-desc {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.9;
+      font-weight: 300;
+      max-width: 520px;
+      margin-top: 0.8rem;
+    }
+    .sec-header { margin-bottom: 3.5rem; }
+    .divider { width: 36px; height: 3px; background: var(--orange); border-radius: 2px; margin: 1rem 0; }
+
+    /* ===== PROPERTIES ===== */
+    #properties { background: var(--bg-light); }
+    .prop-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .prop-tab {
+      padding: 0.5rem 1.4rem;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: none;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .prop-tab.active, .prop-tab:hover {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--white);
+    }
+    .prop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    .prop-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(26,74,50,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .prop-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(26,74,50,0.14); }
+    .prop-img {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 物件画像をCSSグラデーションで表現 */
+    .prop-img-1 { background: linear-gradient(135deg, #2D5A3D 0%, #4A8C62 40%, #6BA882 100%); }
+    .prop-img-2 { background: linear-gradient(135deg, #1A3A5C 0%, #2E5F8A 40%, #4A82B0 100%); }
+    .prop-img-3 { background: linear-gradient(135deg, #5C3A1A 0%, #8A5E2E 40%, #B0844A 100%); }
+    .prop-img-4 { background: linear-gradient(135deg, #3A1A5C 0%, #5E2E8A 40%, #844AB0 100%); }
+    .prop-img-5 { background: linear-gradient(135deg, #1A5C3A 0%, #2E8A5E 40%, #4AB084 100%); }
+    .prop-img-6 { background: linear-gradient(135deg, #5C4A1A 0%, #8A6E2E 40%, #B09344 100%); }
+    .prop-img::before {
+      content: '🏠';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      opacity: 0.35;
+    }
+    .prop-img-2::before { content: '🏢'; }
+    .prop-img-3::before { content: '🏡'; }
+    .prop-img-4::before { content: '🏬'; }
+    .prop-img-5::before { content: '🏠'; }
+    .prop-img-6::before { content: '🏢'; }
+    .prop-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .badge-sale { background: var(--orange); color: var(--white); }
+    .badge-rent { background: var(--green-light); color: var(--white); }
+    .badge-new {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #E8D42A;
+      color: #3A3000;
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .prop-body { padding: 1.4rem; }
+    .prop-area {
+      font-size: 0.72rem;
+      color: var(--green-light);
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 0.4rem;
+    }
+    .prop-name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .prop-specs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .prop-spec {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+    .prop-price {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .prop-amount {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--orange);
+    }
+    .prop-amount span { font-size: 0.75rem; font-weight: 400; color: var(--text-light); font-family: 'Noto Sans JP', sans-serif; }
+    .prop-link {
+      font-size: 0.75rem;
+      color: var(--green-light);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--green-light);
+      transition: color 0.3s;
+    }
+    .prop-link:hover { color: var(--orange); border-color: var(--orange); }
+    .prop-more {
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .btn-green {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: var(--green);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-green:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .btn-outline-green {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      border: 1.5px solid var(--green);
+      color: var(--green);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-left: 1rem;
+      transition: all 0.3s;
+    }
+    .btn-outline-green:hover { background: var(--green); color: var(--white); }
+
+    /* ===== FEATURES ===== */
+    #features { background: var(--green); }
+    #features .sec-label { color: var(--orange-light); }
+    #features .sec-title { color: var(--white); }
+    #features .sec-desc { color: rgba(255,255,255,0.65); }
+    #features .divider { background: var(--orange); }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .feat-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .feat-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+    .feat-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(232,98,42,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 1.2rem;
+    }
+    .feat-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+      line-height: 1.4;
+    }
+    .feat-desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.8;
+    }
+
+    /* ===== AREAS ===== */
+    #areas { background: var(--bg); }
+    .area-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+    .area-card {
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      height: 160px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .area-card:hover { transform: scale(1.02); }
+    .area-card:hover .area-overlay { opacity: 1; }
+    .area-bg-1 { background: linear-gradient(145deg, #1A3A2A, #2D6647); }
+    .area-bg-2 { background: linear-gradient(145deg, #1A2A3A, #2D4D66); }
+    .area-bg-3 { background: linear-gradient(145deg, #3A2A1A, #664D2D); }
+    .area-bg-4 { background: linear-gradient(145deg, #2A1A3A, #4D2D66); }
+    .area-bg-5 { background: linear-gradient(145deg, #1A3A35, #2D6660); }
+    .area-bg-6 { background: linear-gradient(145deg, #3A3A1A, #666640); }
+    .area-bg-7 { background: linear-gradient(145deg, #1A2A1A, #3A4D3A); }
+    .area-bg-8 { background: linear-gradient(145deg, #3A1A1A, #664040); }
+    .area-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 70% 70%, rgba(255,255,255,0.06) 0%, transparent 50%);
+    }
+    .area-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(232,98,42,0.25);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .area-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+    }
+    .area-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+    .area-count {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ===== FLOW ===== */
+    #flow { background: var(--bg-light); }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .flow-grid::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--border));
+    }
+    .flow-item {
+      text-align: center;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    .flow-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.4rem;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .flow-item:first-child .flow-circle { background: var(--orange); border-color: var(--orange); }
+    .flow-item:first-child .flow-circle .flow-num { color: var(--white); }
+    .flow-num {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flow-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+    .flow-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ===== VOICE ===== */
+    #voice { background: var(--bg); }
+    .voice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    .voice-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 16px rgba(26,74,50,0.05);
+      position: relative;
+    }
+    .voice-card::before {
+      content: '"';
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 4rem;
+      color: var(--orange);
+      opacity: 0.15;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    .voice-stars {
+      color: #F0C040;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+    }
+    .voice-text {
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+    .voice-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .voice-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .va-1 { background: #E8F4E8; }
+    .va-2 { background: #E8EEF4; }
+    .va-3 { background: #F4EEE8; }
+    .voice-name {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .voice-info {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+
+    /* ===== CONTACT ===== */
+    #contact { background: var(--bg-light); }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-info-box {
+      background: var(--green);
+      border-radius: 12px;
+      padding: 3rem;
+      color: var(--white);
+    }
+    .contact-info-box .sec-label { color: var(--orange-light); }
+    .contact-info-box .sec-title { color: var(--white); font-size: 1.5rem; }
+    .contact-info-box .divider { background: var(--orange); }
+    .contact-info-box .sec-desc { color: rgba(255,255,255,0.65); }
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .contact-list-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .cl-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(232,98,42,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .contact-tel {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .contact-tel p { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; margin-bottom: 0.3rem; }
+    .contact-tel strong { font-size: 1.8rem; color: var(--white); font-family: 'Noto Serif JP', serif; }
+
+    .contact-form {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 30px rgba(26,74,50,0.08);
+    }
+    .form-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--bg);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.5px;
+    }
+    .form-group label span { color: var(--orange); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #E2E8E4;
+      border-radius: 6px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
+      background: var(--bg-light);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--green-light); background: var(--white); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--text-light); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.78rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+    .form-checkbox input { width: auto; margin-top: 2px; flex-shrink: 0; }
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .form-submit:hover { background: var(--orange-light); transform: translateY(-1px); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark);
+      padding: 4rem 3rem 2rem;
+    }
+    .footer-top {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .footer-brand .footer-logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--orange);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .footer-brand .footer-logo-text {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 1px;
+    }
+    .footer-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.8;
+    }
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 1.5px;
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover { color: var(--orange-light); }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.25);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--orange-light); }
+
+    /* ===== FADE ===== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up:nth-child(2) { transition-delay: 0.08s; }
+    .fade-up:nth-child(3) { transition-delay: 0.16s; }
+    .fade-up:nth-child(4) { transition-delay: 0.24s; }
+    .fade-up:nth-child(5) { transition-delay: 0.32s; }
+    .fade-up:nth-child(6) { transition-delay: 0.40s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 960px) {
+      section { padding: 4rem 1.8rem; }
+      #nav { padding: 0 1.8rem; }
+      .nav-links { display: none; }
+      .prop-grid { grid-template-columns: 1fr 1fr; }
+      .feat-grid { grid-template-columns: 1fr 1fr; }
+      .area-grid { grid-template-columns: 1fr 1fr; }
+      .flow-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .flow-grid::before { display: none; }
+      .voice-grid { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 1.8rem 5rem; }
+      .hero-buildings { display: none; }
+      .prop-grid { grid-template-columns: 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-mark">🏠</div>
+    <span class="nav-logo-text">ネクストライフ不動産</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#properties">物件を探す</a></li>
+    <li><a href="#areas">エリア</a></li>
+    <li><a href="#features">選ばれる理由</a></li>
+    <li><a href="#flow">ご利用の流れ</a></li>
+    <li><a href="#voice">お客様の声</a></li>
+    <li><a href="#contact" class="nav-cta">無料相談する</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta-mobile">無料相談 →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-buildings" aria-hidden="true">
+    <div class="building b5"></div>
+    <div class="building b1"></div>
+    <div class="building b2"></div>
+    <div class="building b3"></div>
+    <div class="building b4"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="hero-badge"><span></span> 東京・神奈川 対応エリア拡大中</div>
+      <h1 class="hero-title">
+        あなたの<em>理想の暮らし</em>を、<br>
+        一緒に探しましょう。
+      </h1>
+      <p class="hero-sub">
+        売買・賃貸・リノベーション物件まで。<br>
+        経験豊富なスタッフが、希望に合った一軒を丁寧にご提案します。
+      </p>
+      <div class="hero-search">
+        <div class="search-group">
+          <label>種別</label>
+          <select>
+            <option>すべて</option>
+            <option>売買</option>
+            <option>賃貸</option>
+            <option>リノベーション</option>
+          </select>
+        </div>
+        <div class="search-group">
+          <label>エリア</label>
+          <select>
+            <option>エリアを選択</option>
+            <option>渋谷区</option>
+            <option>新宿区</option>
+            <option>港区</option>
+            <option>世田谷区</option>
+            <option>横浜市</option>
+            <option>川崎市</option>
+          </select>
+        </div>
+        <div class="search-group">
+          <label>価格帯</label>
+          <select>
+            <option>上限なし</option>
+            <option>〜3,000万円</option>
+            <option>〜5,000万円</option>
+            <option>〜8,000万円</option>
+            <option>8,000万円〜</option>
+          </select>
+        </div>
+        <button class="search-btn">🔍 物件を探す</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-num">4,800<small style="font-size:1.1rem">+</small></div>
+          <div class="hstat-label">掲載物件数</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">20</div>
+          <div class="hstat-label">年の実績</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">12,000<small style="font-size:1.1rem">+</small></div>
+          <div class="hstat-label">成約件数</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">96<small style="font-size:1.1rem">%</small></div>
+          <div class="hstat-label">お客様満足度</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTIES -->
+<section id="properties">
+  <div class="container">
+    <div class="sec-header">
+      <p class="sec-label">FEATURED PROPERTIES</p>
+      <h2 class="sec-title">おすすめ物件</h2>
+      <div class="divider"></div>
+      <p class="sec-desc">条件に合った物件を、専任スタッフが厳選してご紹介します。</p>
+    </div>
+    <div class="prop-tabs">
+      <button class="prop-tab active">すべて</button>
+      <button class="prop-tab">売買</button>
+      <button class="prop-tab">賃貸</button>
+      <button class="prop-tab">リノベーション</button>
+      <button class="prop-tab">新築</button>
+    </div>
+    <div class="prop-grid">
+      <!-- 物件1 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-1">
+          <span class="prop-badge badge-sale">売買</span>
+          <span class="prop-badge badge-new">NEW</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 渋谷区恵比寿</p>
+          <p class="prop-name">恵比寿レジデンス 302号室<br><small style="color:var(--text-light); font-size:0.78rem;">3LDK / 築5年 / 10階建</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 3LDK</span>
+            <span class="prop-spec">📐 75.2㎡</span>
+            <span class="prop-spec">🚉 徒歩5分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">6,800<span>万円</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 物件2 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-2">
+          <span class="prop-badge badge-rent">賃貸</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 港区麻布十番</p>
+          <p class="prop-name">麻布十番タワー 1408号室<br><small style="color:var(--text-light); font-size:0.78rem;">1LDK / 築2年 / 32階建</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 1LDK</span>
+            <span class="prop-spec">📐 42.5㎡</span>
+            <span class="prop-spec">🚉 徒歩3分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">22<span>万円/月</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 物件3 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-3">
+          <span class="prop-badge badge-sale">売買</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 世田谷区三軒茶屋</p>
+          <p class="prop-name">三軒茶屋 一戸建て<br><small style="color:var(--text-light); font-size:0.78rem;">4LDK / 築12年 / 2階建</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 4LDK</span>
+            <span class="prop-spec">📐 112.3㎡</span>
+            <span class="prop-spec">🚉 徒歩8分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">8,500<span>万円</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 物件4 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-4">
+          <span class="prop-badge badge-rent">賃貸</span>
+          <span class="prop-badge badge-new">NEW</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 新宿区西新宿</p>
+          <p class="prop-name">西新宿スカイコート 802<br><small style="color:var(--text-light); font-size:0.78rem;">2LDK / 築8年 / 20階建</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 2LDK</span>
+            <span class="prop-spec">📐 58.7㎡</span>
+            <span class="prop-spec">🚉 徒歩2分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">15<span>万円/月</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 物件5 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-5">
+          <span class="prop-badge badge-sale">リノベ</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 横浜市中区元町</p>
+          <p class="prop-name">元町リノベマンション 501<br><small style="color:var(--text-light); font-size:0.78rem;">2LDK / フルリノベ / 築25年</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 2LDK</span>
+            <span class="prop-spec">📐 65.0㎡</span>
+            <span class="prop-spec">🚉 徒歩7分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">3,980<span>万円</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 物件6 -->
+      <div class="prop-card fade-up">
+        <div class="prop-img prop-img-6">
+          <span class="prop-badge badge-sale">売買</span>
+        </div>
+        <div class="prop-body">
+          <p class="prop-area">📍 川崎市武蔵小杉</p>
+          <p class="prop-name">武蔵小杉ウエストタワー 1202<br><small style="color:var(--text-light); font-size:0.78rem;">3LDK / 築3年 / 44階建</small></p>
+          <div class="prop-specs">
+            <span class="prop-spec">🛏 3LDK</span>
+            <span class="prop-spec">📐 82.4㎡</span>
+            <span class="prop-spec">🚉 徒歩1分</span>
+          </div>
+          <div class="prop-price">
+            <div class="prop-amount">7,200<span>万円</span></div>
+            <a href="#contact" class="prop-link">詳細を見る →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prop-more">
+      <a href="#contact" class="btn-green">物件をもっと見る</a>
+      <a href="#contact" class="btn-outline-green">条件を絞って探す</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="sec-header">
+      <p class="sec-label">WHY CHOOSE US</p>
+      <h2 class="sec-title">ネクストライフが<br>選ばれる4つの理由</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card fade-up">
+        <div class="feat-icon">🤝</div>
+        <h3 class="feat-title">専任担当者が<br>最初から最後まで対応</h3>
+        <p class="feat-desc">担当者がころころ変わらない。初回相談から引き渡しまで、同じスタッフが一貫してサポートします。</p>
+      </div>
+      <div class="feat-card fade-up">
+        <div class="feat-icon">📊</div>
+        <h3 class="feat-title">業界最多水準の<br>4,800件以上の掲載物件</h3>
+        <p class="feat-desc">他社で見つからなかった物件も、当社独自ルートで見つかることがあります。まずはご相談ください。</p>
+      </div>
+      <div class="feat-card fade-up">
+        <div class="feat-icon">💬</div>
+        <h3 class="feat-title">内見・相談は<br>何度でも無料</h3>
+        <p class="feat-desc">「まだ迷っている」「複数見比べたい」OKです。成約まで費用は一切かかりません。</p>
+      </div>
+      <div class="feat-card fade-up">
+        <div class="feat-icon">🌐</div>
+        <h3 class="feat-title">オンライン内見・<br>完全リモート対応</h3>
+        <p class="feat-desc">遠方からのご購入・ご入居も歓迎。オンライン内見から契約まで、一度も来店不要で完結できます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AREAS -->
+<section id="areas">
+  <div class="container">
+    <div class="sec-header">
+      <p class="sec-label">SERVICE AREAS</p>
+      <h2 class="sec-title">対応エリア</h2>
+      <div class="divider"></div>
+      <p class="sec-desc">東京・神奈川を中心に、主要エリアの物件を豊富に取り揃えています。</p>
+    </div>
+    <div class="area-grid">
+      <div class="area-card area-bg-1 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">渋谷区</div>
+          <div class="area-count">物件 420件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-2 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">港区</div>
+          <div class="area-count">物件 380件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-3 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">新宿区</div>
+          <div class="area-count">物件 510件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-4 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">世田谷区</div>
+          <div class="area-count">物件 620件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-5 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">横浜市</div>
+          <div class="area-count">物件 890件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-6 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">川崎市</div>
+          <div class="area-count">物件 540件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-7 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">目黒区 / 品川区</div>
+          <div class="area-count">物件 460件</div>
+        </div>
+      </div>
+      <div class="area-card area-bg-8 fade-up">
+        <div class="area-pattern"></div>
+        <div class="area-overlay"></div>
+        <div class="area-info">
+          <div class="area-name">その他エリア</div>
+          <div class="area-count">随時拡大中 →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section id="flow">
+  <div class="container">
+    <div class="sec-header" style="text-align:center;">
+      <p class="sec-label">PROCESS</p>
+      <h2 class="sec-title">ご利用の流れ</h2>
+      <div class="divider" style="margin: 1rem auto;"></div>
+      <p class="sec-desc" style="margin: 0 auto;">初めての方でも安心。シンプル4ステップで理想の物件へ。</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-item fade-up">
+        <div class="flow-circle">
+          🗣️
+          <span class="flow-num">1</span>
+        </div>
+        <div class="flow-title">無料相談・ヒアリング</div>
+        <div class="flow-desc">希望エリア・予算・間取りなど、まずはお気軽にご相談ください</div>
+      </div>
+      <div class="flow-item fade-up">
+        <div class="flow-circle">
+          🔍
+          <span class="flow-num">2</span>
+        </div>
+        <div class="flow-title">物件のご提案</div>
+        <div class="flow-desc">条件に合った物件をピックアップし、詳細資料をご送付します</div>
+      </div>
+      <div class="flow-item fade-up">
+        <div class="flow-circle">
+          🏠
+          <span class="flow-num">3</span>
+        </div>
+        <div class="flow-title">内見・物件確認</div>
+        <div class="flow-desc">実際に物件をご確認。オンライン内見にも対応しています</div>
+      </div>
+      <div class="flow-item fade-up">
+        <div class="flow-circle">
+          📝
+          <span class="flow-num">4</span>
+        </div>
+        <div class="flow-title">契約・お引き渡し</div>
+        <div class="flow-desc">手続きはすべてサポート。引き渡し後のアフターケアも万全です</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOICE -->
+<section id="voice">
+  <div class="container">
+    <div class="sec-header">
+      <p class="sec-label">CUSTOMER VOICE</p>
+      <h2 class="sec-title">お客様の声</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card fade-up">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「他社では断られた条件でも、ネクストライフさんなら見つかりました。担当の方が最後まで親身に動いてくれて、本当に助かりました。」</p>
+        <div class="voice-author">
+          <div class="voice-avatar va-1">👩</div>
+          <div>
+            <div class="voice-name">T.M さん（30代・女性）</div>
+            <div class="voice-info">渋谷区 / マンション購入</div>
+          </div>
+        </div>
+      </div>
+      <div class="voice-card fade-up">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「地方からの引越しで不安でしたが、オンライン内見から契約まで完全リモートで完結。現地に来ることなく理想の部屋が決まりました！」</p>
+        <div class="voice-author">
+          <div class="voice-avatar va-2">👨</div>
+          <div>
+            <div class="voice-name">K.S さん（20代・男性）</div>
+            <div class="voice-info">港区 / 賃貸マンション</div>
+          </div>
+        </div>
+      </div>
+      <div class="voice-card fade-up">
+        <div class="voice-stars">★★★★★</div>
+        <p class="voice-text">「住宅ローンの不安も丁寧に説明してもらえて、初めてのマイホーム購入がスムーズにできました。家族みんな大満足の一軒です。」</p>
+        <div class="voice-author">
+          <div class="voice-avatar va-3">👪</div>
+          <div>
+            <div class="voice-name">Y.O さん（40代・ご夫婦）</div>
+            <div class="voice-info">世田谷区 / 一戸建て購入</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-layout">
+      <div>
+        <div class="contact-info-box">
+          <p class="sec-label">FREE CONSULTATION</p>
+          <h2 class="sec-title">まずは<br>無料相談から</h2>
+          <div class="divider"></div>
+          <p class="sec-desc">「まだ買うか決めていない」「予算が合うか不安」そんな方こそ、まずはご相談ください。</p>
+          <div class="contact-list">
+            <div class="contact-list-item">
+              <div class="cl-icon">📍</div>
+              東京都渋谷区〇〇〇 2-4-6 ビル名3F
+            </div>
+            <div class="contact-list-item">
+              <div class="cl-icon">🕐</div>
+              営業時間 10:00〜19:00（年中無休）
+            </div>
+            <div class="contact-list-item">
+              <div class="cl-icon">🌐</div>
+              オンライン相談・内見 対応可
+            </div>
+          </div>
+          <div class="contact-tel">
+            <p>お電話でのご相談</p>
+            <strong>0120-XXX-XXX</strong>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form fade-up">
+        <div class="form-title">📝 物件相談フォーム（無料）</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>お名前<span>*</span></label>
+            <input type="text" placeholder="山田 花子">
+          </div>
+          <div class="form-group">
+            <label>電話番号<span>*</span></label>
+            <input type="tel" placeholder="090-0000-0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>メールアドレス<span>*</span></label>
+          <input type="email" placeholder="example@email.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>ご相談の種別<span>*</span></label>
+            <select>
+              <option value="">選択してください</option>
+              <option>物件の購入</option>
+              <option>賃貸を探している</option>
+              <option>物件の売却</option>
+              <option>リノベーション相談</option>
+              <option>その他・まずは話を聞きたい</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ご希望エリア</label>
+            <select>
+              <option value="">エリアを選択</option>
+              <option>渋谷区・恵比寿</option>
+              <option>港区・麻布</option>
+              <option>新宿区・四谷</option>
+              <option>世田谷区・三軒茶屋</option>
+              <option>横浜市</option>
+              <option>川崎市</option>
+              <option>その他・相談したい</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ご要望・ご質問（任意）</label>
+          <textarea placeholder="「子どもが通える保育園が近い」「ペット可物件を探している」など、お気軽にご記入ください"></textarea>
+        </div>
+        <div class="form-checkbox">
+          <input type="checkbox" id="agree">
+          <label for="agree">プライバシーポリシーに同意します。お預かりした情報は不動産サービスのご提供目的のみに使用します。</label>
+        </div>
+        <button class="form-submit">無料相談を申し込む →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-mark">🏠</div>
+        <span class="footer-logo-text">ネクストライフ不動産</span>
+      </div>
+      <p class="footer-desc">東京・神奈川を中心に、売買・賃貸・<br>リノベーション物件を幅広くご紹介。<br>理想の暮らしを、一緒に見つけましょう。</p>
+    </div>
+    <div class="footer-col">
+      <h4>物件を探す</h4>
+      <ul>
+        <li><a href="#">マンション購入</a></li>
+        <li><a href="#">一戸建て購入</a></li>
+        <li><a href="#">賃貸マンション</a></li>
+        <li><a href="#">リノベーション</a></li>
+        <li><a href="#">新築物件</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>エリア</h4>
+      <ul>
+        <li><a href="#">渋谷区・恵比寿</a></li>
+        <li><a href="#">港区・麻布</a></li>
+        <li><a href="#">新宿区</a></li>
+        <li><a href="#">世田谷区</a></li>
+        <li><a href="#">横浜・川崎</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>会社情報</h4>
+      <ul>
+        <li><a href="#">会社概要</a></li>
+        <li><a href="#">スタッフ紹介</a></li>
+        <li><a href="#">よくある質問</a></li>
+        <li><a href="#">お問い合わせ</a></li>
+        <li><a href="#">採用情報</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 ネクストライフ不動産. All Rights Reserved. | 宅地建物取引業者免許 東京都知事（5）第XXXXX号</p>
+    <div class="footer-links">
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">サイトマップ</a>
+      <a href="#">免責事項</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ナビスクロール
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // フェードイン
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // 物件タブ（表示切替のデモ）
+  document.querySelectorAll('.prop-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.prop-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
