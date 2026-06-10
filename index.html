@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="東京・神奈川の売買・賃貸・リノベーション物件をご紹介。4,800件以上の掲載物件から専任スタッフが条件に合った一軒をご提案。初回相談・内見は無料。">
   <title>ネクストライフ不動産 | 東京・神奈川の売買・賃貸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap');
 
     :root {
       --green:       #1A4A32;
@@ -852,6 +854,10 @@
       line-height: 1.5;
     }
     .form-checkbox input { width: auto; margin-top: 2px; flex-shrink: 0; }
+    /* フォームのデモ送信用（未入力ハイライト・完了メッセージ） */
+    .input-err { border-color: #e11d48 !important; }
+    .form-done { color: #15803d; font-weight: 600; font-size: 0.85rem; margin-top: 0.8rem; text-align: center; }
+
     .form-submit {
       width: 100%;
       padding: 1rem;
@@ -1034,7 +1040,7 @@
       <div class="hero-search">
         <div class="search-group">
           <label>種別</label>
-          <select>
+          <select id="hs-type">
             <option>すべて</option>
             <option>売買</option>
             <option>賃貸</option>
@@ -1097,15 +1103,14 @@
       <p class="sec-desc">条件に合った物件を、専任スタッフが厳選してご紹介します。</p>
     </div>
     <div class="prop-tabs">
-      <button class="prop-tab active">すべて</button>
-      <button class="prop-tab">売買</button>
-      <button class="prop-tab">賃貸</button>
-      <button class="prop-tab">リノベーション</button>
-      <button class="prop-tab">新築</button>
+      <button class="prop-tab active" data-filter="all">すべて</button>
+      <button class="prop-tab" data-filter="sale">売買</button>
+      <button class="prop-tab" data-filter="rent">賃貸</button>
+      <button class="prop-tab" data-filter="reno">リノベーション</button>
     </div>
     <div class="prop-grid">
       <!-- 物件1 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="sale">
         <div class="prop-img prop-img-1">
           <span class="prop-badge badge-sale">売買</span>
           <span class="prop-badge badge-new">NEW</span>
@@ -1125,7 +1130,7 @@
         </div>
       </div>
       <!-- 物件2 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="rent">
         <div class="prop-img prop-img-2">
           <span class="prop-badge badge-rent">賃貸</span>
         </div>
@@ -1144,7 +1149,7 @@
         </div>
       </div>
       <!-- 物件3 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="sale">
         <div class="prop-img prop-img-3">
           <span class="prop-badge badge-sale">売買</span>
         </div>
@@ -1163,7 +1168,7 @@
         </div>
       </div>
       <!-- 物件4 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="rent">
         <div class="prop-img prop-img-4">
           <span class="prop-badge badge-rent">賃貸</span>
           <span class="prop-badge badge-new">NEW</span>
@@ -1183,7 +1188,7 @@
         </div>
       </div>
       <!-- 物件5 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="reno">
         <div class="prop-img prop-img-5">
           <span class="prop-badge badge-sale">リノベ</span>
         </div>
@@ -1202,7 +1207,7 @@
         </div>
       </div>
       <!-- 物件6 -->
-      <div class="prop-card fade-up">
+      <div class="prop-card fade-up" data-type="sale">
         <div class="prop-img prop-img-6">
           <span class="prop-badge badge-sale">売買</span>
         </div>
@@ -1444,7 +1449,7 @@
           <div class="contact-list">
             <div class="contact-list-item">
               <div class="cl-icon">📍</div>
-              東京都渋谷区〇〇〇 2-4-6 ビル名3F
+              東京都渋谷区道玄坂 2-4-6 ネクストライフビル 3F
             </div>
             <div class="contact-list-item">
               <div class="cl-icon">🕐</div>
@@ -1457,7 +1462,7 @@
           </div>
           <div class="contact-tel">
             <p>お電話でのご相談</p>
-            <strong>0120-XXX-XXX</strong>
+            <strong>0120-000-000</strong>
           </div>
         </div>
       </div>
@@ -1466,21 +1471,21 @@
         <div class="form-row">
           <div class="form-group">
             <label>お名前<span>*</span></label>
-            <input type="text" placeholder="山田 花子">
+            <input type="text" id="rf-name" placeholder="山田 花子">
           </div>
           <div class="form-group">
             <label>電話番号<span>*</span></label>
-            <input type="tel" placeholder="090-0000-0000">
+            <input type="tel" id="rf-tel" placeholder="090-0000-0000">
           </div>
         </div>
         <div class="form-group">
           <label>メールアドレス<span>*</span></label>
-          <input type="email" placeholder="example@email.com">
+          <input type="email" id="rf-email" placeholder="example@email.com">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>ご相談の種別<span>*</span></label>
-            <select>
+            <select id="rf-kind">
               <option value="">選択してください</option>
               <option>物件の購入</option>
               <option>賃貸を探している</option>
@@ -1511,7 +1516,8 @@
           <input type="checkbox" id="agree">
           <label for="agree">プライバシーポリシーに同意します。お預かりした情報は不動産サービスのご提供目的のみに使用します。</label>
         </div>
-        <button class="form-submit">無料相談を申し込む →</button>
+        <button class="form-submit" id="rf-submit">無料相談を申し込む →</button>
+        <p class="form-done" id="rf-done" hidden>✅ 送信を受け付けました（デモサイトのため、実際には送信されません）</p>
       </div>
     </div>
   </div>
@@ -1559,7 +1565,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2024 ネクストライフ不動産. All Rights Reserved. | 宅地建物取引業者免許 東京都知事（5）第XXXXX号</p>
+    <p class="footer-copy">© 2026 ネクストライフ不動産. All Rights Reserved. | 宅地建物取引業者免許 東京都知事（5）第XXXXX号</p>
     <div class="footer-links">
       <a href="#">プライバシーポリシー</a>
       <a href="#">サイトマップ</a>
@@ -1587,12 +1593,54 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
   fadeEls.forEach(el => observer.observe(el));
 
-  // 物件タブ（表示切替のデモ）
+  // 物件タブ：種別（売買/賃貸/リノベ）で表示を絞り込み
+  function filterProps(type) {
+    document.querySelectorAll('.prop-card').forEach(card => {
+      card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
+    });
+  }
   document.querySelectorAll('.prop-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.prop-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
+      filterProps(tab.dataset.filter);
     });
+  });
+
+  // ヒーロー検索（デモ）：選んだ種別をタブに反映して物件一覧へ移動
+  document.querySelector('.search-btn').addEventListener('click', () => {
+    const map = { '売買': 'sale', '賃貸': 'rent', 'リノベーション': 'reno' };
+    const filter = map[document.getElementById('hs-type').value] || 'all';
+    const tab = document.querySelector(`.prop-tab[data-filter="${filter}"]`);
+    if (tab) tab.click();
+    document.getElementById('properties').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // 相談フォーム（デモ：必須チェックと完了表示のみ。実際の送信はしない）
+  document.getElementById('rf-submit').addEventListener('click', () => {
+    const required = [
+      document.getElementById('rf-name'),
+      document.getElementById('rf-tel'),
+      document.getElementById('rf-email'),
+      document.getElementById('rf-kind'),
+    ];
+    let ok = true;
+    required.forEach(f => {
+      const bad = !f.value.trim();
+      f.classList.toggle('input-err', bad);
+      if (bad) ok = false;
+    });
+    const email = document.getElementById('rf-email');
+    if (email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      email.classList.add('input-err');
+      ok = false;
+    }
+    const agree = document.getElementById('agree');
+    if (!agree.checked) {
+      ok = false;
+      alert('プライバシーポリシーへの同意にチェックを入れてください。');
+    }
+    document.getElementById('rf-done').hidden = !ok;
   });
 </script>
 </body>
